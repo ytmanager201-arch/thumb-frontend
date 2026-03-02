@@ -3,8 +3,6 @@
 <head>
   <title>ThumbForge</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
   <style>
@@ -31,7 +29,6 @@
     h1 {
       color: white;
       margin-bottom: 10px;
-      font-weight: 700;
     }
 
     p {
@@ -46,7 +43,6 @@
       border-radius: 10px;
       border: none;
       margin-bottom: 20px;
-      font-size: 14px;
     }
 
     button {
@@ -55,7 +51,6 @@
       border-radius: 10px;
       border: none;
       font-weight: bold;
-      font-size: 15px;
       background: #dc2626;
       color: white;
       cursor: pointer;
@@ -83,13 +78,6 @@
     @keyframes spin {
       100% { transform: rotate(360deg); }
     }
-
-    .footer {
-      margin-top: 20px;
-      font-size: 12px;
-      color: #64748b;
-    }
-
   </style>
 </head>
 
@@ -99,15 +87,10 @@
   <h1>ThumbForge</h1>
   <p>Download Every Thumbnail From Any Playlist</p>
 
-  <input type="text" id="playlist" placeholder="Paste YouTube Playlist URL">
-
-  <button onclick="download()">Download Thumbnails</button>
+  <input type="text" id="playlist" placeholder="Paste Playlist URL">
+  <button onclick="download()">Download</button>
 
   <div class="loader" id="loader"></div>
-
-  <div class="footer">
-    Simple • Fast • No Login Required
-  </div>
 </div>
 
 <script>
@@ -123,7 +106,7 @@ async function download() {
   loader.style.display = "block";
 
   try {
-    const response = await fetch("RAILWAY_URL_YAHAN_DALO/download", {
+    const response = await fetch("PASTE_RAILWAY_URL_HERE/download", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -131,11 +114,16 @@ async function download() {
       body: JSON.stringify({ playlistUrl: url })
     });
 
+    if (!response.ok) {
+      throw new Error("Failed");
+    }
+
     const blob = await response.blob();
     const link = document.createElement("a");
     link.href = window.URL.createObjectURL(blob);
     link.download = "thumbnails.zip";
     link.click();
+
   } catch (err) {
     alert("Something went wrong");
   }
